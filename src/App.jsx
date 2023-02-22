@@ -3,36 +3,56 @@ import './App.css'
 
 function App() {
   const [scoreBoxes, setScoreBoxes] = useState([])
+  const [currentBox, setCurrentBox] = useState(0)
   const boxRefs = useRef([])
 
   const boxes = [...Array(64)].map((_, index) => index + 1)
 
   useEffect(() => {
-    for (let i = 0; i < scoreBoxes.length; i++) {
-      console.log("Scorebox", scoreBoxes[i])
+    const firstBox = scoreBoxes[0]
+    const boxRef = boxRefs.current[firstBox]
 
-      const boxRef = boxRefs.current[scoreBoxes[i]]
-      if (boxRef) {
-        boxRef.style.backgroundColor = "red"
-        boxRef.textContent = i + 1
+    if (boxRef) {
+      boxRef.textContent = 1
+    }
+
+    function handleBoxClick(e) {
+      const clickedBox = parseInt(e.target.id)
+
+      if (clickedBox === scoreBoxes[currentBox]) {
+        if (currentBox < scoreBoxes.length - 1) {
+          setCurrentBox(currentBox + 1)
+          const nextBox = scoreBoxes[currentBox + 1]
+          const nextBoxRef = boxRefs.current[nextBox]
+
+          if (nextBoxRef) {
+            nextBoxRef.textContent = currentBox + 2
+          }
+        } else {
+          alert('You won!')
+        }
       }
     }
-  }, [scoreBoxes])
+
+    boxRefs.current.forEach((boxRef) => {
+      boxRef.addEventListener('click', handleBoxClick)
+    })
+
+    return () => {
+      boxRefs.current.forEach((boxRef) => {
+        boxRef.removeEventListener('click', handleBoxClick)
+      })
+    }
+  }, [scoreBoxes, currentBox])
 
   function handleStart() {
-    console.log("Start")
-
-    let arr = [];
+    let arr = []
     while (arr.length < 20) {
-      let r = Math.floor(Math.random() * 64);
-      if (arr.indexOf(r) === -1) arr.push(r);
+      let r = Math.floor(Math.random() * 64)
+      if (arr.indexOf(r) === -1) arr.push(r)
     }
-    console.log(arr);
+    console.log(arr)
     setScoreBoxes(arr)
-  }
-
-  function handleBoxClick(e) {
-    console.log(e.target.id)
   }
 
   return (
@@ -46,10 +66,8 @@ function App() {
             className="box"
             key={index}
             id={index}
-            onClick={handleBoxClick}
             ref={(ref) => (boxRefs.current[index] = ref)}
-          >
-          </div>
+          ></div>
         ))}
       </div>
     </div>
