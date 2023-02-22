@@ -1,0 +1,26 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  outline: 2px solid red;
+  padding: 1rem;
+}
+
+.game-wrapper {
+  outline: 2px solid green;
+  height: 400px;
+  max-width: 640px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+
+.box {
+  outline: 1px solid blue;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
