@@ -1,19 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
 function App() {
+  const [scoreBoxes, setScoreBoxes] = useState([])
+  const boxRefs = useRef([])
 
-  const boxes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
+  const boxes = [...Array(64)].map((_, index) => index + 1)
+
+  useEffect(() => {
+    for (let i = 0; i < scoreBoxes.length; i++) {
+      console.log("Scorebox", scoreBoxes[i])
+
+      const boxRef = boxRefs.current[scoreBoxes[i]]
+      if (boxRef) {
+        boxRef.style.backgroundColor = "red"
+        boxRef.textContent = i + 1
+      }
+    }
+  }, [scoreBoxes])
 
   function handleStart() {
     console.log("Start")
+
+    let arr = [];
+    while (arr.length < 20) {
+      let r = Math.floor(Math.random() * 64);
+      if (arr.indexOf(r) === -1) arr.push(r);
+    }
+    console.log(arr);
+    setScoreBoxes(arr)
   }
 
   function handleBoxClick(e) {
-    console.log(e.target.innerHTML)
+    console.log(e.target.id)
   }
-  
+
   return (
     <div className="App">
       <h1>1to20</h1>
@@ -21,8 +42,13 @@ function App() {
 
       <div className="game-wrapper">
         {boxes.map((box, index) => (
-          <div className="box" key={index} onClick={(e) => {handleBoxClick(e)}}>
-            {index}
+          <div
+            className="box"
+            key={index}
+            id={index}
+            onClick={handleBoxClick}
+            ref={(ref) => (boxRefs.current[index] = ref)}
+          >
           </div>
         ))}
       </div>
