@@ -17,22 +17,27 @@ function App() {
     }
 
     function handleBoxClick(e) {
-      const clickedBox = parseInt(e.target.id)
+      const clickedBox = parseInt(e.target.id);
 
       if (clickedBox === scoreBoxes[currentBox]) {
+        e.target.textContent = "";
+        e.target.style.visibility = "hidden";
+
         if (currentBox < scoreBoxes.length - 1) {
-          setCurrentBox(currentBox + 1)
-          const nextBox = scoreBoxes[currentBox + 1]
-          const nextBoxRef = boxRefs.current[nextBox]
+          setCurrentBox(currentBox + 1);
+          const nextBox = scoreBoxes[currentBox + 1];
+          const nextBoxRef = boxRefs.current[nextBox];
 
           if (nextBoxRef) {
-            nextBoxRef.textContent = currentBox + 2
+            nextBoxRef.textContent = currentBox + 2;
           }
         } else {
-          alert('You won!')
+          alert("You won!");
         }
       }
     }
+
+
 
     boxRefs.current.forEach((boxRef) => {
       boxRef.addEventListener('click', handleBoxClick)
