@@ -1,5 +1,5 @@
 #root {
-  max-width: 640px;
+  max-width: 480px;
   margin: 0 auto;
   width: 100%;
   text-align: center;
@@ -46,7 +46,7 @@
 
 .title {
   margin-bottom: -1rem;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .instructions {
@@ -54,7 +54,7 @@
   justify-content: space-between;
   align-items: center;
   margin-top: -1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   height: 1.5rem;
 }
 

@@ -145,6 +145,8 @@ function App() {
         ))}
       </div>
 
+      <hr style={{marginTop: "3rem"}}/>
+
       <div className="best-times" style={{marginTop: "2rem"}}>
         <h2 style={{marginBottom: "0.5rem", textAlign: "initial"}}>Best Times</h2>
         <table>
