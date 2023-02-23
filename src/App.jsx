@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
+import Stopwatch from "./components/Stopwatch"
+
 function App() {
   const [scoreBoxes, setScoreBoxes] = useState([])
   const [currentBox, setCurrentBox] = useState(0)
-  const [gameStarted, setGameStarted] = useState(false)
+  const [timeStarted, setTimeStarted] = useState(false)
+  const [gameFinished, setGameFinished] = useState(false)
+
   const boxRefs = useRef([])
 
   const boxes = [...Array(64)].map((_, index) => index + 1)
@@ -24,6 +28,10 @@ function App() {
     function handleBoxClick(e) {
       const clickedBox = parseInt(e.target.id);
 
+      if (clickedBox === scoreBoxes[0]) {
+        setTimeStarted(true)
+      }
+
       if (clickedBox === scoreBoxes[currentBox]) {
         e.target.textContent = "";
         e.target.style.visibility = "hidden";
@@ -37,7 +45,9 @@ function App() {
             nextBoxRef.textContent = currentBox + 2;
           }
         } else {
-          alert("You won!");
+          setTimeStarted(false)
+          setGameFinished(true)
+          console.log("You won!");
         }
       }
     }
@@ -56,7 +66,6 @@ function App() {
   }, [scoreBoxes, currentBox])
 
   function handleStart() {
-    setGameStarted(true)
     let arr = []
     while (arr.length < 20) {
       let r = Math.floor(Math.random() * 64)
@@ -67,7 +76,8 @@ function App() {
   }
 
   function handleReset() {
-    setGameStarted(false)
+    setTimeStarted(false)
+    setGameFinished(false)
 
     // Set currentBox to 0 to start over
     setCurrentBox(0);
@@ -83,10 +93,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1>1to20</h1>
-      <p>Made by <a href="https://trevortylerlee.com">Trevor Lee</a></p>
+      <h1 className="title">1to20</h1>
+      <p style={{marginBottom: "2rem"}}>Made by <a href="https://trevortylerlee.com">Trevor Lee</a></p>
 
-      <button onClick={handleReset} style={{marginBottom: "1rem"}}>Reset</button>
+      <div className="instructions">
+      <button onClick={handleReset}>Reset</button>
+
+      <Stopwatch timeStarted={timeStarted} gameFinished={gameFinished}/>
+      </div>
 
       <div className="game-wrapper">
         {boxes.map((box, index) => (

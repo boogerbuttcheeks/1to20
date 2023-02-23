@@ -22,7 +22,7 @@
 }
 
 .box {
-  outline: 1px solid blue;
+  /* outline: 1px solid blue; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,4 +42,16 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.title {
+  margin-bottom: -1rem;
+}
+
+.instructions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  height: 2rem;
 }
