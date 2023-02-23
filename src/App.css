@@ -1,15 +1,13 @@
 #root {
-  max-width: 1280px;
+  max-width: 640px;
   margin: 0 auto;
   width: 100%;
   text-align: center;
-  outline: 2px solid red;
   padding: 1rem;
 }
 
 .game-wrapper {
-  outline: 2px solid green;
-  max-width: 640px;
+  /* outline: 2px solid green; */
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -29,6 +27,8 @@
   text-align: center;
   position: relative;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
 
 .box:after {
@@ -52,6 +52,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   height: 2rem;
 }

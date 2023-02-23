@@ -1,4 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
+import useSound from 'use-sound';
+import tapSfx from '/tap.mp3'
+import resetSfx from '/reset.mp3'
 import './App.css'
 
 import Stopwatch from "./components/Stopwatch"
@@ -10,6 +13,9 @@ function App() {
   const [gameFinished, setGameFinished] = useState(false)
 
   const boxRefs = useRef([])
+
+  const [playTap] = useSound(tapSfx, { volume: 0.25 })
+  const [playReset] = useSound(resetSfx, { volume: 0.5 })
 
   const boxes = [...Array(64)].map((_, index) => index + 1)
 
@@ -33,8 +39,9 @@ function App() {
       }
 
       if (clickedBox === scoreBoxes[currentBox]) {
-        e.target.textContent = "";
-        e.target.style.visibility = "hidden";
+        // e.target.textContent = "";
+        // e.target.style.visibility = "hidden";
+        e.target.style.background = "#646CFF";
 
         if (currentBox < scoreBoxes.length - 1) {
           setCurrentBox(currentBox + 1);
@@ -51,8 +58,6 @@ function App() {
         }
       }
     }
-
-
 
     boxRefs.current.forEach((boxRef) => {
       boxRef.addEventListener('click', handleBoxClick)
@@ -71,7 +76,6 @@ function App() {
       let r = Math.floor(Math.random() * 64)
       if (arr.indexOf(r) === -1) arr.push(r)
     }
-    console.log(arr)
     setScoreBoxes(arr)
   }
 
@@ -85,7 +89,7 @@ function App() {
     // reset the box numbers and visibility
     boxRefs.current.forEach(box => {
       box.textContent = '';
-      box.style.visibility = 'visible';
+      box.style.background = "none";
     });
 
     handleStart()
@@ -97,7 +101,10 @@ function App() {
       <p style={{marginBottom: "2rem"}}>Made by <a href="https://trevortylerlee.com">Trevor Lee</a></p>
 
       <div className="instructions">
-      <button onClick={handleReset}>Reset</button>
+      <button onClick={() => {
+        playReset()
+        handleReset()
+      }}>Reset</button>
 
       <Stopwatch timeStarted={timeStarted} gameFinished={gameFinished}/>
       </div>
@@ -109,6 +116,7 @@ function App() {
             key={index}
             id={index}
             ref={(ref) => (boxRefs.current[index] = ref)}
+            onClick={playTap}
           ></div>
         ))}
       </div>
