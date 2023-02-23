@@ -10,8 +10,12 @@ export default function Stopwatch({timeStarted, gameFinished}) {
   // Run when game is over
   useEffect(() => {
     if (gameFinished && !bestTimeSaved) {
-      let bestTimes = JSON.parse(localStorage.getItem("bestTimes")) || [];
+      let bestTimes = JSON.parse(localStorage.getItem("bestTimes"));
       console.log(bestTimes);
+
+      if (bestTimes === null) {
+        bestTimes = [];
+      }
 
       // Add the current time to the list of best times
       bestTimes.push({ time, timestamp: new Date().getTime() });
