@@ -4,9 +4,14 @@ import './App.css'
 function App() {
   const [scoreBoxes, setScoreBoxes] = useState([])
   const [currentBox, setCurrentBox] = useState(0)
+  const [gameStarted, setGameStarted] = useState(false)
   const boxRefs = useRef([])
 
   const boxes = [...Array(64)].map((_, index) => index + 1)
+
+  useEffect(() => {
+    handleStart()
+  }, [])
 
   useEffect(() => {
     const firstBox = scoreBoxes[0]
@@ -51,6 +56,7 @@ function App() {
   }, [scoreBoxes, currentBox])
 
   function handleStart() {
+    setGameStarted(true)
     let arr = []
     while (arr.length < 20) {
       let r = Math.floor(Math.random() * 64)
@@ -60,10 +66,27 @@ function App() {
     setScoreBoxes(arr)
   }
 
+  function handleReset() {
+    setGameStarted(false)
+
+    // Set currentBox to 0 to start over
+    setCurrentBox(0);
+
+    // reset the box numbers and visibility
+    boxRefs.current.forEach(box => {
+      box.textContent = '';
+      box.style.visibility = 'visible';
+    });
+
+    handleStart()
+  }
+
   return (
     <div className="App">
       <h1>1to20</h1>
-      <button onClick={handleStart}>Start</button>
+      <p>Made by <a href="https://trevortylerlee.com">Trevor Lee</a></p>
+
+      <button onClick={handleReset} style={{marginBottom: "1rem"}}>Reset</button>
 
       <div className="game-wrapper">
         {boxes.map((box, index) => (

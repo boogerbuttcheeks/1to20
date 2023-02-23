@@ -28,6 +28,7 @@
   justify-content: center;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 .box:after {
