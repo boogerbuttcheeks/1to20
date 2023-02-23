@@ -5,10 +5,35 @@ import { useState, useEffect } from "react";
 export default function Stopwatch({timeStarted, gameFinished}) {
   const [time, setTime] = useState(0);
   const [running, setRunning] = useState(false);
+  const [bestTimeSaved, setBestTimeSaved] = useState(false);
+
+  // Run when game is over
+  useEffect(() => {
+    if (gameFinished && !bestTimeSaved) {
+      let bestTimes = JSON.parse(localStorage.getItem("bestTimes")) || [];
+      console.log(bestTimes);
+
+      // Add the current time to the list of best times
+      bestTimes.push({ time, timestamp: new Date().getTime() });
+
+      // Sort the best times array in ascending order of time
+      bestTimes.sort((a, b) => a.time - b.time);
+
+      // Truncate the array to the top 10 fastest times
+      bestTimes = bestTimes.slice(0, 10);
+
+      // Save the updated best times array to local storage
+      localStorage.setItem("bestTimes", JSON.stringify(bestTimes));
+
+      // Set the state variable to true to indicate that the best time has been saved
+      setBestTimeSaved(true);
+    }
+  }, [gameFinished, time, bestTimeSaved]);
 
   useEffect(() => {
     if (timeStarted) {
       setRunning(true)
+      setBestTimeSaved(false)
     } else if (gameFinished) {
       setRunning(false)
       console.log("Your time was " + time)

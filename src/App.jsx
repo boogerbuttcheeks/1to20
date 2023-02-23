@@ -11,6 +11,7 @@ function App() {
   const [currentBox, setCurrentBox] = useState(0)
   const [timeStarted, setTimeStarted] = useState(false)
   const [gameFinished, setGameFinished] = useState(false)
+  const [bestTimes, setBestTimes] = useState([])
 
   const boxRefs = useRef([])
 
@@ -21,6 +22,8 @@ function App() {
 
   useEffect(() => {
     handleStart()
+    const bestTimes = JSON.parse(localStorage.getItem("bestTimes")) || [];
+    setBestTimes(bestTimes)
   }, [])
 
   useEffect(() => {
@@ -70,6 +73,13 @@ function App() {
     }
   }, [scoreBoxes, currentBox])
 
+  useEffect(() => {
+    if (gameFinished) {
+      const bestTimes = JSON.parse(localStorage.getItem("bestTimes")) || [];
+      setBestTimes(bestTimes)
+    }
+  }, [gameFinished])
+
   function handleStart() {
     let arr = []
     while (arr.length < 20) {
@@ -93,6 +103,20 @@ function App() {
     });
 
     handleStart()
+  }
+
+  function convertJSONDate(jsonDate) {
+    const timestamp = new Date(jsonDate);
+
+    const date = timestamp.toLocaleDateString();
+    const time = timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const dateTimeString = `${date} ${time}`;
+
+    return dateTimeString
+  }
+
+  function millisecondsToSeconds(milliseconds) {
+    return milliseconds / 1000;
   }
 
   return (
@@ -119,6 +143,28 @@ function App() {
             onClick={playTap}
           ></div>
         ))}
+      </div>
+
+      <div className="best-times" style={{marginTop: "2rem"}}>
+        <h2 style={{marginBottom: "0.5rem", textAlign: "initial"}}>Best Times</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Time (sec)</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bestTimes.length > 0 && bestTimes.map((bestTime, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{millisecondsToSeconds(bestTime.time)}</td>
+                <td>{convertJSONDate(bestTime.timestamp)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

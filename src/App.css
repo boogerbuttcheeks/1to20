@@ -55,3 +55,27 @@
   margin-bottom: 2rem;
   height: 2rem;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+th {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+@media (prefers-color-scheme: light) {
+  th {
+    background-color: #f1f1f1;
+    color: black;
+  }
+}
