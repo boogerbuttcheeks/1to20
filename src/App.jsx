@@ -45,6 +45,7 @@ function App() {
         // e.target.textContent = "";
         // e.target.style.visibility = "hidden";
         e.target.style.background = "#646CFF";
+        e.target.style.color = "white";
 
         if (currentBox < scoreBoxes.length - 1) {
           setCurrentBox(currentBox + 1);
